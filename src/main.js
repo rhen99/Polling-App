@@ -1,10 +1,7 @@
-import { createApp } from "vue";
-import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
+import { createApp } from "vue/dist/vue.esm-bundler";
 import App from "./App.vue";
+import router from "./router";
 
 import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
-createApp(App, {
-  BootstrapVue,
-  BootstrapVueIcons,
-}).mount("#app");
+
+createApp(App).use(router).mount("#app");
