@@ -1,23 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Home from "../components/Home.vue";
+import Dashboard from "../components/Dashboard.vue";
+import Poll from "../components/Poll.vue";
 
 const routes = [
   {
     path: "/",
-    component: {
-      template: "<h1>Home</h1>",
-    },
+    component: Home,
   },
   {
     path: "/dashboard",
-    component: {
-      template: "<h1>Dashboard</h1>",
-    },
+    component: Dashboard,
   },
   {
-    path: "/:slug",
-    component: {
-      template: "<h1>Poll</h1>",
-    },
+    path: "/poll/:id",
+    component: Poll,
   },
 ];
 
