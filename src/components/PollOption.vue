@@ -22,4 +22,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.voted {
+  background-color: #d8d7d7;
+}
+</style>
