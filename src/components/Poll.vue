@@ -14,6 +14,8 @@
           href="#"
           class="list-group-item list-group-item-action"
           v-for="option in poll.options"
+          :class="{ voted: voted == option.id, disabled: isVoted }"
+          @click="handleVote(option.id, $event)"
           :key="option.id"
         >
           <PollOption :option="option" :totalVotes="poll.total_votes" />
@@ -32,6 +34,8 @@ export default {
   },
   data() {
     return {
+      voted: null,
+      isVoted: false,
       polls: [
         {
           id: 0,
@@ -111,8 +115,24 @@ export default {
       const index = parseInt(this.$route.params.id);
       this.poll = this.polls[index];
     }
+    if (localStorage.getItem("vote")) {
+      this.voted = localStorage.getItem("vote");
+      this.isVoted = true;
+    }
+  },
+  methods: {
+    handleVote(id, e) {
+      e.preventDefault();
+      this.isVoted = true;
+      this.voted = id;
+      localStorage.setItem("vote", id);
+    },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.voted {
+  background-color: hsl(224, 87%, 95%);
+}
+</style>
