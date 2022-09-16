@@ -32,6 +32,81 @@ export default {
     PollList,
     CreatePollModal,
   },
+  data() {
+    return {
+      polls: [
+        {
+          id: 0,
+          title: "Poll 1",
+          description: "Poll Description",
+          total_votes: 0,
+          options: [
+            {
+              id: 0,
+              text: "Option 1",
+              votes: 0,
+            },
+            {
+              id: 1,
+              text: "Option 2",
+              votes: 0,
+            },
+            {
+              id: 2,
+              text: "Option 3",
+              votes: 0,
+            },
+          ],
+        },
+        {
+          id: 0,
+          title: "Poll 2",
+          description: "Poll Description",
+          total_votes: 0,
+          options: [
+            {
+              id: 0,
+              text: "Option 1",
+              votes: 0,
+            },
+            {
+              id: 1,
+              text: "Option 2",
+              votes: 0,
+            },
+            {
+              id: 2,
+              text: "Option 3",
+              votes: 0,
+            },
+          ],
+        },
+        {
+          id: 0,
+          title: "Poll 3",
+          description: "Poll Description",
+          total_votes: 0,
+          options: [
+            {
+              id: 0,
+              text: "Option 1",
+              votes: 0,
+            },
+            {
+              id: 1,
+              text: "Option 2",
+              votes: 0,
+            },
+            {
+              id: 2,
+              text: "Option 3",
+              votes: 0,
+            },
+          ],
+        },
+      ],
+    };
+  },
 };
 </script>
 
