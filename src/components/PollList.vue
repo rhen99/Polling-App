@@ -1,9 +1,8 @@
 <template>
   <ul class="list-group">
-    <PollItem />
-    <PollItem />
-    <PollItem />
-    <PollItem />
+    <li class="list-group-item d-flex" v-for="poll in polls" :key="poll.id">
+      <PollItem :poll="poll" />
+    </li>
   </ul>
 </template>
 
@@ -13,6 +12,9 @@ export default {
   name: "PollList",
   components: {
     PollItem,
+  },
+  props: {
+    polls: Array,
   },
 };
 </script>

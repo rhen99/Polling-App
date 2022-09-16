@@ -18,7 +18,7 @@
   </div>
   <div class="row mt-3">
     <div class="col">
-      <PollList />
+      <PollList :polls="polls" />
     </div>
   </div>
 </template>
@@ -39,27 +39,27 @@ export default {
           id: 0,
           title: "Poll 1",
           description: "Poll Description",
-          total_votes: 0,
+          total_votes: 120,
           options: [
             {
               id: 0,
               text: "Option 1",
-              votes: 0,
+              votes: 40,
             },
             {
               id: 1,
               text: "Option 2",
-              votes: 0,
+              votes: 40,
             },
             {
               id: 2,
               text: "Option 3",
-              votes: 0,
+              votes: 40,
             },
           ],
         },
         {
-          id: 0,
+          id: 1,
           title: "Poll 2",
           description: "Poll Description",
           total_votes: 0,
@@ -82,7 +82,7 @@ export default {
           ],
         },
         {
-          id: 0,
+          id: 2,
           title: "Poll 3",
           description: "Poll Description",
           total_votes: 0,
