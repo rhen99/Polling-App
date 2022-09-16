@@ -14,7 +14,7 @@
           href="#"
           class="list-group-item list-group-item-action"
           v-for="option in poll.options"
-          :class="{ voted: voted == option.id, disabled: isVoted }"
+          :class="{ hasVoted: voted == option.id, disabled: isVoted }"
           @click="handleVote(option.id, $event)"
           :key="option.id"
         >
@@ -132,7 +132,7 @@ export default {
 </script>
 
 <style scoped>
-.voted {
-  background-color: hsl(224, 87%, 95%);
+.hasVoted {
+  background-color: hsl(224, 87%, 90%) !important;
 }
 </style>
