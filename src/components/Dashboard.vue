@@ -13,7 +13,7 @@
       >
         Create A Poll
       </button>
-      <CreatePollModal />
+      <CreatePollModal @create-poll="createPoll" />
     </div>
   </div>
   <div class="row mt-3">
@@ -106,6 +106,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    createPoll(newPoll) {
+      this.polls = [newPoll, ...this.polls];
+    },
   },
 };
 </script>

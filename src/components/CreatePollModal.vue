@@ -18,7 +18,10 @@
           ></button>
         </div>
         <div class="modal-body">
-          <form>
+          <div v-if="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+          </div>
+          <form @submit="handleCreatePoll">
             <div class="mb-3">
               <label for="title" class="form-label">Poll Title</label>
               <input
@@ -30,7 +33,7 @@
             </div>
             <div class="mb-3">
               <label for="description" class="form-label"
-                >Poll Description</label
+                >Poll Description ( Optional )</label
               >
               <textarea
                 class="form-control"
@@ -90,9 +93,33 @@ export default {
     addOption(e) {
       e.preventDefault();
       if (this.optionText !== "") {
-        this.pollOptions.push({ text: this.optionText });
+        this.pollOptions.push({
+          id: Math.floor(Math.random() * 100000),
+          text: this.optionText,
+        });
         this.optionText = "";
       }
+    },
+    handleCreatePoll(e) {
+      e.preventDefault();
+      if (this.title === "") {
+        return (this.errorMessage = "Title is required");
+      }
+      if (this.pollOptions.length < 2) {
+        return (this.errorMessage = "At least 2 options are required");
+      }
+      const newPoll = {
+        id: Math.floor(Math.random() * 100000),
+        title: this.title,
+        description: this.description,
+        total_votes: 0,
+        options: this.pollOptions,
+      };
+      this.$emit("create-poll", newPoll);
+      this.title = "";
+      this.description = "";
+      this.errorMessage = "";
+      this.pollOptions = [];
     },
   },
 };
