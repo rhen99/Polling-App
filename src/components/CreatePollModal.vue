@@ -21,7 +21,12 @@
           <form>
             <div class="mb-3">
               <label for="title" class="form-label">Poll Title</label>
-              <input type="text" class="form-control" id="title" />
+              <input
+                type="text"
+                v-model="title"
+                class="form-control"
+                id="title"
+              />
             </div>
             <div class="mb-3">
               <label for="description" class="form-label"
@@ -31,17 +36,36 @@
                 class="form-control"
                 id="description"
                 rows="3"
+                v-model="description"
               ></textarea>
             </div>
-            <div class="d-flex mb-3">
-              <div class="flex-grow-1 pe-2">
-                <label for="option" class="form-label">Option Text</label>
-                <input type="text" class="form-control" id="option" />
+            <form @submit="addOption">
+              <div class="d-flex mb-3">
+                <div class="flex-grow-1 pe-2">
+                  <label for="option" class="form-label">Option Text</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="option"
+                    v-model="optionText"
+                  />
+                </div>
+                <div class="align-self-end">
+                  <button class="btn btn-primary">Add Option</button>
+                </div>
               </div>
-              <div class="align-self-end">
-                <button class="btn btn-primary">Add Option</button>
+              <div class="mb-3">
+                <ul class="list-group">
+                  <li
+                    class="list-group-item"
+                    v-for="(option, index) in pollOptions"
+                    :key="index"
+                  >
+                    {{ option.text }}
+                  </li>
+                </ul>
               </div>
-            </div>
+            </form>
             <button type="submit" class="btn btn-primary">Create Poll</button>
           </form>
         </div>
@@ -53,6 +77,24 @@
 <script>
 export default {
   name: "CreatePollModal",
+  data() {
+    return {
+      title: "",
+      description: "",
+      optionText: "",
+      pollOptions: [],
+      errorMessage: "",
+    };
+  },
+  methods: {
+    addOption(e) {
+      e.preventDefault();
+      if (this.optionText !== "") {
+        this.pollOptions.push({ text: this.optionText });
+        this.optionText = "";
+      }
+    },
+  },
 };
 </script>
 
