@@ -21,6 +21,9 @@
           <div v-if="errorMessage" class="alert alert-danger" role="alert">
             {{ errorMessage }}
           </div>
+          <div v-if="successMessage" class="alert alert-success" role="alert">
+            {{ successMessage }}
+          </div>
           <form @submit="handleCreatePoll">
             <div class="mb-3">
               <label for="title" class="form-label">Poll Title</label>
@@ -87,6 +90,7 @@ export default {
       optionText: "",
       pollOptions: [],
       errorMessage: "",
+      successMessage: "",
     };
   },
   methods: {
@@ -102,6 +106,7 @@ export default {
     },
     handleCreatePoll(e) {
       e.preventDefault();
+      this.successMessage = "";
       if (this.title === "") {
         return (this.errorMessage = "Title is required");
       }
@@ -116,6 +121,7 @@ export default {
         options: this.pollOptions,
       };
       this.$emit("create-poll", newPoll);
+      this.successMessage = "Poll Created Successfully";
       this.title = "";
       this.description = "";
       this.errorMessage = "";
