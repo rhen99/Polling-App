@@ -24,7 +24,9 @@ export default {
   },
   computed: {
     getProgressPercentage() {
-      return Math.round((this.option.votes / this.totalVotes) * 100);
+      return this.option.votes > 0
+        ? Math.round((this.option.votes / this.totalVotes) * 100)
+        : 0;
     },
   },
 };

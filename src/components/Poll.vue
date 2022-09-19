@@ -27,6 +27,7 @@
 
 <script>
 import PollOption from "./PollOption.vue";
+import { getPollData } from "../services/pollSevice";
 export default {
   name: "Poll",
   components: {
@@ -39,13 +40,18 @@ export default {
       poll: {},
     };
   },
-  created() {},
+  async created() {
+    this.poll = await getPollData(this.$route.params.id);
+  },
   methods: {
     handleVote(id, e) {
       e.preventDefault();
       this.isVoted = true;
       this.voted = id;
-      localStorage.setItem("vote", id);
+      localStorage.setItem(
+        "vote",
+        JSON.stringify({ poll_id: this.poll.id, option_id: id })
+      );
     },
   },
 };

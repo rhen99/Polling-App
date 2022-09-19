@@ -1,5 +1,5 @@
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 
 export const getPollsData = async () => {
   const polls = [];
@@ -16,4 +16,22 @@ export const getPollsData = async () => {
     polls.push(pollData);
   });
   return polls;
+};
+export const getPollData = async (id) => {
+  const docRef = doc(db, "polls", id);
+
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return {
+      id: docSnap.id,
+      title: docSnap.data().title,
+      description: docSnap.data().description,
+      status: docSnap.data().status,
+      total_votes: docSnap.data().total_votes,
+      options: docSnap.data().options,
+    };
+  } else {
+    console.log("No such document!");
+  }
 };
