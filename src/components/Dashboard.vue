@@ -26,6 +26,7 @@
 <script>
 import PollList from "./PollList.vue";
 import CreatePollModal from "./CreatePollModal.vue";
+import { getPollsData } from "../services/pollSevice";
 export default {
   name: "Dashboard",
   components: {
@@ -34,83 +35,16 @@ export default {
   },
   data() {
     return {
-      polls: [
-        {
-          id: 0,
-          title: "Poll 1",
-          description: "Poll Description",
-          total_votes: 120,
-          options: [
-            {
-              id: 0,
-              text: "Option 1",
-              votes: 40,
-            },
-            {
-              id: 1,
-              text: "Option 2",
-              votes: 40,
-            },
-            {
-              id: 2,
-              text: "Option 3",
-              votes: 40,
-            },
-          ],
-        },
-        {
-          id: 1,
-          title: "Poll 2",
-          description: "Poll Description",
-          total_votes: 0,
-          options: [
-            {
-              id: 0,
-              text: "Option 1",
-              votes: 0,
-            },
-            {
-              id: 1,
-              text: "Option 2",
-              votes: 0,
-            },
-            {
-              id: 2,
-              text: "Option 3",
-              votes: 0,
-            },
-          ],
-        },
-        {
-          id: 2,
-          title: "Poll 3",
-          description: "Poll Description",
-          total_votes: 0,
-          options: [
-            {
-              id: 0,
-              text: "Option 1",
-              votes: 0,
-            },
-            {
-              id: 1,
-              text: "Option 2",
-              votes: 0,
-            },
-            {
-              id: 2,
-              text: "Option 3",
-              votes: 0,
-            },
-          ],
-        },
-      ],
+      polls: [],
     };
   },
   methods: {
     createPoll(newPoll) {
       this.polls = [newPoll, ...this.polls];
     },
+  },
+  async created() {
+    this.polls = await getPollsData();
   },
 };
 </script>
