@@ -1,5 +1,5 @@
 import { db } from "../firebase";
-import { collection, getDocs, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, addDoc } from "firebase/firestore";
 
 export const getPollsData = async () => {
   const polls = [];
@@ -33,5 +33,13 @@ export const getPollData = async (id) => {
     };
   } else {
     console.log("No such document!");
+  }
+};
+export const addPollData = async (newPoll) => {
+  try {
+    const docRef = await addDoc(collection(db, "polls"), newPoll);
+    return docRef;
+  } catch (error) {
+    console.log(error);
   }
 };

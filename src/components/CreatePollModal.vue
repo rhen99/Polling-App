@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import { addPollData } from "../services/pollSevice";
 export default {
   name: "CreatePollModal",
   data() {
@@ -100,11 +101,12 @@ export default {
         this.pollOptions.push({
           id: Math.floor(Math.random() * 100000),
           text: this.optionText,
+          votes: 0,
         });
         this.optionText = "";
       }
     },
-    handleCreatePoll(e) {
+    async handleCreatePoll(e) {
       e.preventDefault();
       this.successMessage = "";
       if (this.title === "") {
@@ -113,19 +115,25 @@ export default {
       if (this.pollOptions.length < 2) {
         return (this.errorMessage = "At least 2 options are required");
       }
-      const newPoll = {
-        id: Math.floor(Math.random() * 100000),
-        title: this.title,
-        description: this.description,
-        total_votes: 0,
-        options: this.pollOptions,
-      };
-      this.$emit("create-poll", newPoll);
-      this.successMessage = "Poll Created Successfully";
-      this.title = "";
-      this.description = "";
-      this.errorMessage = "";
-      this.pollOptions = [];
+
+      try {
+        const newPoll = {
+          title: this.title,
+          description: this.description,
+          total_votes: 0,
+          options: this.pollOptions,
+          status: "ongoing",
+        };
+        const addedPoll = await addPollData(newPoll);
+        this.$emit("create-poll", { id: addedPoll.id, ...newPoll });
+        this.successMessage = "Poll Created Successfully";
+        this.title = "";
+        this.description = "";
+        this.errorMessage = "";
+        this.pollOptions = [];
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
