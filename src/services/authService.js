@@ -1,21 +1,5 @@
 import { auth } from "../firebase";
-import {
-  onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-
-export function getAuthState() {
-  let currentUser = null;
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      currentUser = user;
-    } else {
-      currentUser = user;
-    }
-  });
-  return currentUser;
-}
+import { signOut, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 export const signInWithGoogle = async () => {
   try {
@@ -28,5 +12,12 @@ export const signInWithGoogle = async () => {
       errorMessage: error.message,
       errorEmail: error.email,
     };
+  }
+};
+export const logOut = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.log(error);
   }
 };

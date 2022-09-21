@@ -16,7 +16,13 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul v-if="isLoggedIn" class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">Log Out</a>
+            <a
+              class="nav-link"
+              @click.prevent="handleLogOut"
+              aria-current="page"
+              href="#"
+              >Log Out</a
+            >
           </li>
         </ul>
       </div>
@@ -25,16 +31,34 @@
 </template>
 
 <script>
-import { getAuthState } from "../services/authService";
+import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { logOut } from "../services/authService";
 export default {
   name: "Header",
+  created() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.isLoggedIn = true;
+      } else {
+        this.isLoggedIn = false;
+      }
+    });
+  },
   data() {
     return {
       isLoggedIn: false,
     };
   },
-  created() {
-    console.log(getAuthState());
+  methods: {
+    async handleLogOut() {
+      try {
+        await logOut();
+        this.$router.push("/");
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>

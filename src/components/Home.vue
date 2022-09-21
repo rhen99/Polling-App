@@ -19,13 +19,15 @@ import { signInWithGoogle } from "../services/authService";
 export default {
   name: "Home",
   methods: {
-    handleSignInWithGoogle(e) {
+    async handleSignInWithGoogle(e) {
       e.preventDefault();
-      signInWithGoogle()
-        .then(() => {
-          this.$router.push("/dashboard");
-        })
-        .catch((err) => console.log(err));
+      try {
+        const result = await signInWithGoogle();
+        console.log(result);
+        this.$router.push("/dashboard");
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
