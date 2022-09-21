@@ -16,11 +16,12 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul v-if="isLoggedIn" class="navbar-nav">
           <li class="nav-item">
-            <a
-              class="nav-link"
-              @click.prevent="handleLogOut"
-              aria-current="page"
-              href="#"
+            <router-link to="/dashboard" class="nav-link"
+              >Dashboard</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" @click.prevent="handleLogOut" href="#"
               >Log Out</a
             >
           </li>
