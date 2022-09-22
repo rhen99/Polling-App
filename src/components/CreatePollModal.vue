@@ -82,7 +82,7 @@
 
 <script>
 import { addPollData } from "../services/pollSevice";
-import { auth } from "../firebase";
+import { getCurrentUser } from "../services/authService";
 export default {
   name: "CreatePollModal",
   data() {
@@ -124,7 +124,7 @@ export default {
           total_votes: 0,
           options: this.pollOptions,
           status: "ongoing",
-          user_id: auth.currentUser.uid,
+          user_id: getCurrentUser().uid,
         };
         const addedPoll = await addPollData(newPoll);
         this.$emit("create-poll", { id: addedPoll.id, ...newPoll });

@@ -1,7 +1,13 @@
 <template>
   <div class="row mb-3">
     <div class="col text-end" v-if="poll.status === 'ongoing'">
-      <button class="btn btn-danger" @click="handleStatus">End Poll</button>
+      <button
+        class="btn btn-danger"
+        v-if="user && user.uid === poll.user_id"
+        @click="handleStatus"
+      >
+        End Poll
+      </button>
     </div>
     <div class="col" v-else>
       <div class="alert alert-success">
@@ -41,6 +47,7 @@
 <script>
 import PollOption from "./PollOption.vue";
 import { getPollData, updatePollData } from "../services/pollSevice";
+import { getCurrentUser } from "../services/authService";
 export default {
   name: "Poll",
   components: {
@@ -52,9 +59,11 @@ export default {
       isVoted: false,
       hasEnded: false,
       poll: {},
+      user: null,
     };
   },
   async created() {
+    this.user = getCurrentUser();
     this.poll = await getPollData(this.$route.params.id);
     if (localStorage.getItem(this.poll.id)) {
       this.isVoted = true;

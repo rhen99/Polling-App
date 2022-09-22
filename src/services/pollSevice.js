@@ -1,4 +1,5 @@
-import { db, auth } from "../firebase";
+import { db } from "../firebase";
+import { getCurrentUser } from "./authService";
 import {
   collection,
   getDocs,
@@ -13,7 +14,7 @@ import {
 export const getPollsData = async () => {
   const polls = [];
   const querySnapshot = await getDocs(
-    query(collection(db, "polls"), where("user_id", "==", auth.currentUser.uid))
+    query(collection(db, "polls"), where("user_id", "==", getCurrentUser().uid))
   );
   querySnapshot.forEach((doc) => {
     const pollData = {

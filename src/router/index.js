@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { auth } from "../firebase";
+import { getCurrentUser } from "../services/authService";
 import Home from "../components/Home.vue";
 import Dashboard from "../components/Dashboard.vue";
 import Poll from "../components/Poll.vue";
@@ -34,7 +34,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = auth.currentUser;
+  const isAuthenticated = getCurrentUser();
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const requiresGuest = to.matched.some((record) => record.meta.requiresGuest);
 
