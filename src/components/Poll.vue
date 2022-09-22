@@ -1,4 +1,14 @@
 <template>
+  <div class="row mb-3">
+    <div class="col text-end" v-if="poll.status === 'ongoing'">
+      <button class="btn btn-danger" @click="handleStatus">End Poll</button>
+    </div>
+    <div class="col" v-else>
+      <div class="alert alert-success">
+        This poll has ended with {{ poll.total_votes }} total votes
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col">
       <h1>{{ poll.title }}</h1>
@@ -14,7 +24,10 @@
           href="#"
           class="list-group-item list-group-item-action"
           v-for="option in poll.options"
-          :class="{ hasVoted: voted == option.id, disabled: isVoted }"
+          :class="{
+            hasVoted: voted == option.id,
+            disabled: isVoted || hasEnded,
+          }"
           @click="handleVote(option.id, $event)"
           :key="option.id"
         >
@@ -27,7 +40,7 @@
 
 <script>
 import PollOption from "./PollOption.vue";
-import { getPollData, updatePollVotesData } from "../services/pollSevice";
+import { getPollData, updatePollData } from "../services/pollSevice";
 export default {
   name: "Poll",
   components: {
@@ -37,6 +50,7 @@ export default {
     return {
       voted: null,
       isVoted: false,
+      hasEnded: false,
       poll: {},
     };
   },
@@ -61,13 +75,28 @@ export default {
           options: updatedOptions,
           total_votes: this.poll.total_votes + 1,
         };
-        await updatePollVotesData(this.poll.id, updatedPoll);
+        await updatePollData(this.poll.id, updatedPoll);
 
         this.poll = updatedPoll;
 
         this.isVoted = true;
         this.voted = id;
         localStorage.setItem(this.poll.id, id);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async handleStatus() {
+      try {
+        const updatedPoll = {
+          ...this.poll,
+          status: "ended",
+        };
+        await updatePollData(this.poll.id, updatedPoll);
+
+        this.poll = updatedPoll;
+
+        this.hasEnded = true;
       } catch (error) {
         console.log(error);
       }

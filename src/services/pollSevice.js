@@ -56,7 +56,7 @@ export const addPollData = async (newPoll) => {
     console.log(error);
   }
 };
-export const updatePollVotesData = async (id, updatedPoll) => {
+export const updatePollData = async (id, updatedPoll) => {
   try {
     await setDoc(doc(db, "polls", id), updatedPoll);
   } catch (error) {
