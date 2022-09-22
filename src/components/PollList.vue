@@ -1,7 +1,10 @@
 <template>
   <ul class="list-group">
     <li class="list-group-item d-flex" v-for="poll in polls" :key="poll.id">
-      <PollItem :poll="poll" />
+      <PollItem
+        :poll="poll"
+        @handle-delete="(id) => $emit('delete-poll', id)"
+      />
     </li>
   </ul>
 </template>
@@ -16,6 +19,7 @@ export default {
   props: {
     polls: Array,
   },
+  emits: ["delete-poll"],
 };
 </script>
 

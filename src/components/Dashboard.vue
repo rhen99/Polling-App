@@ -18,7 +18,7 @@
   </div>
   <div class="row mt-3">
     <div class="col" v-if="polls.length > 0">
-      <PollList :polls="polls" />
+      <PollList :polls="polls" @delete-poll="deletePoll" />
     </div>
     <div class="col" v-else>
       <div class="card">
@@ -46,6 +46,9 @@ export default {
   methods: {
     createPoll(newPoll) {
       this.polls = [newPoll, ...this.polls];
+    },
+    deletePoll(id) {
+      this.polls = this.polls.filter((poll) => poll.id !== id);
     },
   },
   async created() {

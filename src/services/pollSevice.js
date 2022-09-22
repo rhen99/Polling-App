@@ -7,6 +7,7 @@ import {
   doc,
   addDoc,
   setDoc,
+  deleteDoc,
   query,
   where,
 } from "firebase/firestore";
@@ -60,6 +61,14 @@ export const addPollData = async (newPoll) => {
 export const updatePollData = async (id, updatedPoll) => {
   try {
     await setDoc(doc(db, "polls", id), updatedPoll);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deletePollData = async (id) => {
+  try {
+    await deleteDoc(doc(db, "polls", id));
   } catch (error) {
     console.log(error);
   }
