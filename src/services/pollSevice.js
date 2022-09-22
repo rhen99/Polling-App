@@ -1,9 +1,19 @@
-import { db } from "../firebase";
-import { collection, getDocs, getDoc, doc, addDoc } from "firebase/firestore";
+import { db, auth } from "../firebase";
+import {
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  addDoc,
+  query,
+  where,
+} from "firebase/firestore";
 
 export const getPollsData = async () => {
   const polls = [];
-  const querySnapshot = await getDocs(collection(db, "polls"));
+  const querySnapshot = await getDocs(
+    query(collection(db, "polls"), where("user_id", "==", auth.currentUser.uid))
+  );
   querySnapshot.forEach((doc) => {
     const pollData = {
       id: doc.id,

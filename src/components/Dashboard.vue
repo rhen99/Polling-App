@@ -17,8 +17,13 @@
     </div>
   </div>
   <div class="row mt-3">
-    <div class="col">
+    <div class="col" v-if="polls.length > 0">
       <PollList :polls="polls" />
+    </div>
+    <div class="col" v-else>
+      <div class="card">
+        <div class="card-body">You have no polls found.</div>
+      </div>
     </div>
   </div>
 </template>
