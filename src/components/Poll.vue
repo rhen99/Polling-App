@@ -27,7 +27,7 @@
 
 <script>
 import PollOption from "./PollOption.vue";
-import { getPollData } from "../services/pollSevice";
+import { getPollData, updatePollVotesData } from "../services/pollSevice";
 export default {
   name: "Poll",
   components: {
@@ -42,16 +42,35 @@ export default {
   },
   async created() {
     this.poll = await getPollData(this.$route.params.id);
+    if (localStorage.getItem(this.poll.id)) {
+      this.isVoted = true;
+      this.voted = localStorage.getItem(this.poll.id);
+    }
   },
   methods: {
-    handleVote(id, e) {
+    async handleVote(id, e) {
       e.preventDefault();
-      this.isVoted = true;
-      this.voted = id;
-      localStorage.setItem(
-        "vote",
-        JSON.stringify({ poll_id: this.poll.id, option_id: id })
-      );
+
+      try {
+        const updatedOptions = this.poll.options.map((option) =>
+          option.id === id ? { ...option, votes: option.votes + 1 } : option
+        );
+
+        const updatedPoll = {
+          ...this.poll,
+          options: updatedOptions,
+          total_votes: this.poll.total_votes + 1,
+        };
+        await updatePollVotesData(this.poll.id, updatedPoll);
+
+        this.poll = updatedPoll;
+
+        this.isVoted = true;
+        this.voted = id;
+        localStorage.setItem(this.poll.id, id);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
