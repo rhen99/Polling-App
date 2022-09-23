@@ -1,44 +1,53 @@
 <template>
-  <div class="row mb-3">
-    <div class="col text-end" v-if="poll.status === 'ongoing'">
-      <button
-        class="btn btn-danger"
-        v-if="user && user.uid === poll.user_id"
-        @click="handleStatus"
-      >
-        End Poll
-      </button>
-    </div>
-    <div class="col" v-else>
-      <div class="alert alert-success">
-        This poll has ended with {{ poll.total_votes }} total votes
+  <template v-if="!isLoading">
+    <div class="row mb-3">
+      <div class="col text-end" v-if="poll.status === 'ongoing'">
+        <button
+          class="btn btn-danger"
+          v-if="user && user.uid === poll.user_id"
+          @click="handleStatus"
+        >
+          End Poll
+        </button>
+      </div>
+      <div class="col" v-else>
+        <div class="alert alert-success">
+          This poll has ended with {{ poll.total_votes }} total votes
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <h1>{{ poll.title }}</h1>
-      <p>
-        {{ poll.description }}
-      </p>
+    <div class="row">
+      <div class="col">
+        <h1>{{ poll.title }}</h1>
+        <p>
+          {{ poll.description }}
+        </p>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="list-group">
-        <a
-          href="#"
-          class="list-group-item list-group-item-action"
-          v-for="option in poll.options"
-          :class="{
-            hasVoted: voted == option.id,
-            disabled: isVoted || hasEnded,
-          }"
-          @click="handleVote(option.id, $event)"
-          :key="option.id"
-        >
-          <PollOption :option="option" :totalVotes="poll.total_votes" />
-        </a>
+    <div class="row">
+      <div class="col">
+        <div class="list-group">
+          <a
+            href="#"
+            class="list-group-item list-group-item-action"
+            v-for="option in poll.options"
+            :class="{
+              hasVoted: voted == option.id,
+              disabled: isVoted || hasEnded,
+            }"
+            @click="handleVote(option.id, $event)"
+            :key="option.id"
+          >
+            <PollOption :option="option" :totalVotes="poll.total_votes" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </template>
+  <div class="row" v-else>
+    <div class="col text-center">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
     </div>
   </div>
@@ -60,6 +69,7 @@ export default {
       hasEnded: false,
       poll: {},
       user: null,
+      isLoading: true,
     };
   },
   async created() {
@@ -69,6 +79,7 @@ export default {
       this.isVoted = true;
       this.voted = localStorage.getItem(this.poll.id);
     }
+    this.isLoading = false;
   },
   methods: {
     async handleVote(id, e) {
