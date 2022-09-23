@@ -1,5 +1,12 @@
 <template>
-  <template v-if="!isLoading">
+  <div class="row" v-if="!isLoading && !poll">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">Poll Not Found.</div>
+      </div>
+    </div>
+  </div>
+  <template v-else-if="!isLoading && poll">
     <div class="row mb-3">
       <div class="col text-end" v-if="poll.status === 'ongoing'">
         <button
@@ -74,12 +81,20 @@ export default {
   },
   async created() {
     this.user = getCurrentUser();
-    this.poll = await getPollData(this.$route.params.id);
-    if (localStorage.getItem(this.poll.id)) {
-      this.isVoted = true;
-      this.voted = localStorage.getItem(this.poll.id);
+    try {
+      this.poll = await getPollData(this.$route.params.id);
+
+      if (this.poll) {
+        if (localStorage.getItem(this.poll.id)) {
+          this.isVoted = true;
+          this.voted = localStorage.getItem(this.poll.id);
+        }
+      }
+
+      this.isLoading = false;
+    } catch (error) {
+      console.log(error);
     }
-    this.isLoading = false;
   },
   methods: {
     async handleVote(id, e) {

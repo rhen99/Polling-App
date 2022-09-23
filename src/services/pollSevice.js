@@ -34,20 +34,24 @@ export const getPollsData = async () => {
 export const getPollData = async (id) => {
   const docRef = doc(db, "polls", id);
 
-  const docSnap = await getDoc(docRef);
+  try {
+    const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    return {
-      id: docSnap.id,
-      title: docSnap.data().title,
-      description: docSnap.data().description,
-      status: docSnap.data().status,
-      total_votes: docSnap.data().total_votes,
-      options: docSnap.data().options,
-      user_id: docSnap.data().user_id,
-    };
-  } else {
-    console.log("No such document!");
+    if (docSnap.exists()) {
+      return {
+        id: docSnap.id,
+        title: docSnap.data().title,
+        description: docSnap.data().description,
+        status: docSnap.data().status,
+        total_votes: docSnap.data().total_votes,
+        options: docSnap.data().options,
+        user_id: docSnap.data().user_id,
+      };
+    } else {
+      console.log("No such document!");
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 export const addPollData = async (newPoll) => {
