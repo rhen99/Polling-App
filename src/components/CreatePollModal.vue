@@ -67,7 +67,16 @@
                     v-for="(option, index) in pollOptions"
                     :key="index"
                   >
-                    {{ option.text }}
+                    <span class="d-inline-block" :style="{ width: '80%' }">{{
+                      option.text
+                    }}</span>
+                    <a
+                      href="#"
+                      class="btn btn-default btn-sm"
+                      @click.prevent="removeOption(option.id)"
+                    >
+                      Delete
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -99,13 +108,19 @@ export default {
     addOption(e) {
       e.preventDefault();
       if (this.optionText !== "") {
-        this.pollOptions.push({
-          id: Math.floor(Math.random() * 100000),
-          text: this.optionText,
-          votes: 0,
-        });
+        this.pollOptions = [
+          ...this.pollOptions,
+          {
+            id: Math.floor(Math.random() * 100000),
+            text: this.optionText,
+            votes: 0,
+          },
+        ];
         this.optionText = "";
       }
+    },
+    removeOption(id) {
+      this.pollOptions = this.pollOptions.filter((option) => id !== option.id);
     },
     async handleCreatePoll(e) {
       e.preventDefault();
